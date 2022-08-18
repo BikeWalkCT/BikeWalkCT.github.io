@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Discover New Britain 2019</title>
+	<title>Discover Olmsted 2022</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="utf-8">
 	<link rel="shortcut icon" href="favicon.ico">
@@ -84,7 +84,7 @@
 	slideMenu.setContents(contents);
 
 	// insert map title at top of layer control
-	$('<h6 id="mapTitle">Discover New Britain 2019</h6>').insertBefore('div.leaflet-control-layers-base');
+	$('<h6 id="mapTitle">Discover Olmsted 2022</h6>').insertBefore('div.leaflet-control-layers-base');
 
 	// baselayers
 	var CartoDB_Positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
@@ -106,23 +106,23 @@
 	controlLayers.addBaseLayer(OCM, 'Open Cycle Map');
 
 	// route overlays
-	var nb10 = new L.GPX("routes/nb2019-10.gpx", {
-		color: '#ff9900',
-		distanceMarkers: { showAll: 11, offset: 1609, bgcolor: 'bg-yellow'} // meters per mile; bgcolor defined in style.css
-	}).setText('>', {repeat: true, attributes: {fill: 'white'}}).addTo(map);
-	controlLayers.addOverlay(nb10, '10 mile route <i class="color-line bg-yellow"></i>');
-
-	var nb25 = new L.GPX("routes/nb2019-25.gpx", {
-		color: 'blue',
-		distanceMarkers: { showAll: 11, offset: 1609, bgcolor: 'bg-blue'} // meters per mile; bgcolor defined in style.css
-	}).setText('>', {repeat: true, attributes: {fill: 'white'}}).addTo(map);
-	controlLayers.addOverlay(nb25, '25 mile route <i class="color-line bg-blue"></i>');
-
-	var nb50 = new L.GPX("routes/nb2019-50.gpx", {
+	var discover10 = new L.GPX("routes/discover2022-10.gpx", {
 		color: '#ff3399',
 		distanceMarkers: { showAll: 11, offset: 1609, bgcolor: 'bg-pink'} // meters per mile; bgcolor defined in style.css
 	}).setText('>', {repeat: true, attributes: {fill: 'white'}}).addTo(map);
-	controlLayers.addOverlay(nb50, '50 mile route <i class="color-line bg-pink"></i>');
+	controlLayers.addOverlay(discover10, '10 mile route <i class="color-line bg-pink"></i>');
+
+	var discover25 = new L.GPX("routes/discover2022-25.gpx", {
+		color: 'blue',
+		distanceMarkers: { showAll: 11, offset: 1609, bgcolor: 'bg-blue'} // meters per mile; bgcolor defined in style.css
+	}).setText('>', {repeat: true, attributes: {fill: 'white'}}).addTo(map);
+	controlLayers.addOverlay(discover25, '25 mile route <i class="color-line bg-blue"></i>');
+
+	var discover50 = new L.GPX("routes/discover2022-50.gpx", {
+		color: '#ff9900',
+		distanceMarkers: { showAll: 11, offset: 1609, bgcolor: 'bg-yellow'} // meters per mile; bgcolor defined in style.css
+	}).setText('>', {repeat: true, attributes: {fill: 'white'}}).addTo(map);
+	controlLayers.addOverlay(discover50, '50 mile route <i class="color-line bg-yellow"></i>');
 
 	// Thanks @ilyankou for gatherBounds function; update layer names
 	function gatherBounds() {
