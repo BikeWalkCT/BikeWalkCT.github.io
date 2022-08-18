@@ -12,6 +12,8 @@
 		<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
 	<!-- load jQuery  -->
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+	<!-- load Esri Leaflet -->
+		<script src="https://unpkg.com/esri-leaflet@3.0.8/dist/esri-leaflet.js"></script>
 	<!-- load Font-Awesome -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<!-- load Leaflet.locatecontrol https://github.com/domoritz/leaflet-locatecontrol -->
@@ -41,12 +43,8 @@
 	  zoom: 13,
 	  zoomControl: false, // add later to reposition
 	  scrollWheelZoom: false,
-		attributionControl: false, // add later to prepend
 		tap: false
 	});
-
-	// Prepend attribution and links to download GPX files
-	L.control.attribution({prefix: 'Download routes from RWGPS: <a href="https://ridewithgps.com/routes/30768400" target="_blank">10 mi</a> - <a href="https://ridewithgps.com/routes/30768306" target="_blank">25 mi</a> - <a href="https://ridewithgps.com/routes/30768143" target="_blank">50 mi</a> | View <a href="https://github.com/jackdougherty/bikemapcode" target="_blank">code on GitHub</a>'}).addTo(map);
 
 	var controlLayers = L.control.layers( null, null, {
 	  position: "topleft",
@@ -87,17 +85,17 @@
 	$('<h6 id="mapTitle">Discover Olmsted 2022</h6>').insertBefore('div.leaflet-control-layers-base');
 
 	// baselayers
+	var Esri_WorldStreetMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+		attribution: 'Tiles &copy; Esri'
+	}).addTo(map);
+	controlLayers.addBaseLayer(Esri_WorldStreetMap, 'Street map');
+
 	var CartoDB_Positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
 		subdomains: 'abcd',
 		maxZoom: 20
-	}).addTo(map);
-	controlLayers.addBaseLayer(CartoDB_Positron, 'Light Street map');
-
-	var Esri_WorldStreetMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-		attribution: 'Tiles &copy; Esri'
 	});
-	controlLayers.addBaseLayer(Esri_WorldStreetMap, 'Street map');
+	controlLayers.addBaseLayer(CartoDB_Positron, 'Light Street map');
 
 	// get your own Open Cycle Map API key
 	var OCM = L.tileLayer('https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=1d12526533cd4f0f9f1e166c7bb855d7', {
@@ -105,23 +103,25 @@
 	});
 	controlLayers.addBaseLayer(OCM, 'Open Cycle Map');
 
-	// route overlays
+	// downloaded from https://ridewithgps.com/routes/40308638
 	var discover10 = new L.GPX("routes/discover2022-10.gpx", {
 		color: '#ff3399',
 		distanceMarkers: { showAll: 11, offset: 1609, bgcolor: 'bg-pink'} // meters per mile; bgcolor defined in style.css
-	}).setText('>', {repeat: true, attributes: {fill: 'white'}}).addTo(map);
+	}).addTo(map);
 	controlLayers.addOverlay(discover10, '10 mile route <i class="color-line bg-pink"></i>');
 
+	// downloaded from https://ridewithgps.com/routes/40308791
 	var discover25 = new L.GPX("routes/discover2022-25.gpx", {
 		color: 'blue',
 		distanceMarkers: { showAll: 11, offset: 1609, bgcolor: 'bg-blue'} // meters per mile; bgcolor defined in style.css
-	}).setText('>', {repeat: true, attributes: {fill: 'white'}}).addTo(map);
+	}).addTo(map);
 	controlLayers.addOverlay(discover25, '25 mile route <i class="color-line bg-blue"></i>');
 
+	// downloaded from https://ridewithgps.com/routes/40449694
 	var discover50 = new L.GPX("routes/discover2022-50.gpx", {
 		color: '#ff9900',
 		distanceMarkers: { showAll: 11, offset: 1609, bgcolor: 'bg-yellow'} // meters per mile; bgcolor defined in style.css
-	}).setText('>', {repeat: true, attributes: {fill: 'white'}}).addTo(map);
+	}).addTo(map);
 	controlLayers.addOverlay(discover50, '50 mile route <i class="color-line bg-yellow"></i>');
 
 	// Thanks @ilyankou for gatherBounds function; update layer names
